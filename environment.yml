@@ -1,0 +1,6 @@
+name: PA04
+channels:
+  - defaults
+dependencies:
+  - python=3.10
+prefix: /home/micro/miniconda3/envs/PA04
