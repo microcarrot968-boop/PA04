@@ -90,26 +90,26 @@ print("Confusion Matrix:")
 print(cm)
 
 # 7. Save model and results
-Path("models").mkdir(exist_ok=True)
-Path("results").mkdir(exist_ok=True)
+Path("models/baseline").mkdir(parents=True, exist_ok=True)
+Path("results/baseline").mkdir(parents=True, exist_ok=True)
 
-model.save("models/baseline.keras")
-joblib.dump(scaler, "models/baseline_scaler.pkl")
+model.save("models/baseline/baseline.keras")
+joblib.dump(scaler, "models/baseline/baseline_scaler.pkl")
 
-df.to_csv("results/data_splits.csv", index=False)
+df.to_csv("results/baseline/data_splits.csv", index=False)
 pd.DataFrame(history.history).to_csv(
-    "results/training_history.csv", index=False
+    "results/baseline/training_history.csv", index=False
 )
 
 pd.DataFrame(
     cm,
     index=["2000s", "2010s", "2020s"],
     columns=["2000s", "2010s", "2020s"]
-).to_csv("results/confusion_matrix.csv")
+).to_csv("results/baseline/confusion_matrix.csv")
 
 pd.DataFrame([{
     "accuracy": accuracy,
     "macro_f1": macro_f1
-}]).to_csv("results/baseline_metrics.csv", index=False)
+}]).to_csv("results/baseline/baseline_metrics.csv", index=False)
 
 print("\nModel and results saved successfully!")
