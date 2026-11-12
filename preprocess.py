@@ -29,6 +29,13 @@ features = [
 df = df[["title", "artist_name", "year"] + features]
 df = df.dropna(subset=features)
 
+# Remove songs with identical audio features
+df = df.drop_duplicates(subset=features, keep="first")
+
+# Remove duplicate audio after sorting by chart year
+df = df.sort_values("year")
+df = df.drop_duplicates(subset=features, keep="first")
+
 # 5. Create era labels
 def get_era(year):
     if year < 2010:
