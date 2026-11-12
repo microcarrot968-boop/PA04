@@ -1,0 +1,5 @@
+,accuracy,accuracy,macro_f1,macro_f1
+,mean,std,mean,std
+split_type,,,,
+Artist Disjoint,0.5887,0.0163,0.5235,0.0156
+Random,0.6007,0.0198,0.5387,0.0173
