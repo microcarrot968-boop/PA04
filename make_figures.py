@@ -7,9 +7,7 @@ import tensorflow as tf
 
 from sklearn.metrics import precision_recall_curve, average_precision_score
 
-# --------------------------------------------------
 # 1. Output folder and figure style
-# --------------------------------------------------
 OUT = Path("results/figures")
 OUT.mkdir(parents=True, exist_ok=True)
 
@@ -60,9 +58,7 @@ def save(fig, name):
     plt.close(fig)
     print(f"Saved: {name}")
 
-# --------------------------------------------------
 # 2. Load saved results
-# --------------------------------------------------
 def load_metrics(folder):
     if folder == "baseline":
         path = f"results/{folder}/baseline_metrics.csv"
@@ -89,9 +85,8 @@ splits_df = pd.read_csv("results/baseline/data_splits.csv")
 
 eras = ["2000s", "2010s", "2020s"]
 
-# --------------------------------------------------
+
 # 3. Figure 01: Model benchmark comparison
-# --------------------------------------------------
 models = ["Baseline", "Artist Added", "Undersampling"]
 accuracy = [
     baseline["accuracy"],
@@ -138,9 +133,8 @@ style_axis(ax)
 fig.tight_layout()
 save(fig, "fig01_benchmark")
 
-# --------------------------------------------------
+
 # 4. Figure 02: Precision-Recall curve for 2020s
-# --------------------------------------------------
 features = [
     "danceability", "energy", "tempo", "valence",
     "speechiness", "acousticness", "instrumentalness",
@@ -206,10 +200,8 @@ style_axis(ax, grid_axis="both")
 fig.tight_layout()
 save(fig, "fig02_pr_curve")
 
-# --------------------------------------------------
+
 # 5. Figure 03: Baseline learning curves
-# --------------------------------------------------
-epochs = np.arange(1, len(history) + 1)
 best_epoch = history["val_loss"].idxmin() + 1
 
 fig, axes = plt.subplots(1, 2, figsize=(6.8, 2.8))
@@ -234,9 +226,7 @@ style_axis(axes[1], grid_axis="both")
 fig.tight_layout()
 save(fig, "fig03_learning_curve")
 
-# --------------------------------------------------
 # 6. Figure 04: RQ2 mean ± SD
-# --------------------------------------------------
 summary = comparison.groupby("split_type")[["accuracy", "macro_f1"]].agg(["mean", "std"])
 
 groups = ["Random", "Artist Disjoint"]
@@ -276,9 +266,7 @@ style_axis(ax, grid_axis="both")
 fig.tight_layout()
 save(fig, "fig04_rq2_errorbar")
 
-# --------------------------------------------------
 # 7. Figure 05: RQ2 repeated experiments across seeds
-# --------------------------------------------------
 fig, axes = plt.subplots(1, 2, figsize=(6.8, 2.8))
 
 for ax, metric, ylabel in [
@@ -309,9 +297,7 @@ axes[0].legend(frameon=False)
 fig.tight_layout()
 save(fig, "fig05_rq2_repeated")
 
-# --------------------------------------------------
 # 8. Helper for confusion matrices
-# --------------------------------------------------
 def draw_confusion_pair(cm1, cm2, titles, filename, normalize=False, cmap="Blues"):
     mats = [cm1.astype(float), cm2.astype(float)]
 
@@ -355,9 +341,7 @@ def draw_confusion_pair(cm1, cm2, titles, filename, normalize=False, cmap="Blues
     fig.tight_layout()
     save(fig, filename)
 
-# --------------------------------------------------
 # 9. Figure 06: RQ1 confusion matrix
-# --------------------------------------------------
 draw_confusion_pair(
     cm_baseline,
     cm_artist,
@@ -367,9 +351,7 @@ draw_confusion_pair(
     cmap="YlGnBu"
 )
 
-# --------------------------------------------------
 # 10. Figure 07: RQ3 normalized confusion matrix
-# --------------------------------------------------
 draw_confusion_pair(
     cm_baseline,
     cm_under,
@@ -379,9 +361,7 @@ draw_confusion_pair(
     cmap="OrRd"
 )
 
-# --------------------------------------------------
 # 11. Figure 08: Class-wise recall
-# --------------------------------------------------
 recall_base = np.diag(cm_baseline) / cm_baseline.sum(axis=1)
 recall_under = np.diag(cm_under) / cm_under.sum(axis=1)
 
@@ -419,9 +399,7 @@ style_axis(ax)
 fig.tight_layout()
 save(fig, "fig08_class_recall")
 
-# --------------------------------------------------
 # 12. Figure 09: Dataset distribution
-# --------------------------------------------------
 counts = splits_df["era"].value_counts().reindex(eras)
 
 fig, ax = plt.subplots(figsize=(4.0, 3.0))
